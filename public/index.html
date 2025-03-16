@@ -10,73 +10,89 @@
   <body>
     <div class="flex justify-center text-2xl mt-20 m-4">
       <div
-        class="inline-flex items-center flex-col border-2 border-gray-500 p-4 rounded bg-gray-300"
+        class="inline-flex items-center flex-col border-2 border-gray-500 p-4 rounded bg-gray-200 w-1/4 relative"
       >
+        <button
+          class="close-button absolute right-2 top-2 bg-white px-2 rounded hover:scale-95 duration-300 hover:bg-gray-100 cursor-pointer hidden"
+        >
+          X
+        </button>
         <h1 class="border-b-2 border-gray-500 p-2 mb-4 text-center">
           Login / Register
         </h1>
-        <div class="justify-center items-center w-full flex-col">
-          <div class="login-form">
+        <div class="justify-center items-center flex w-full">
+          <div class="login-form w-full">
             <input
               type="text"
               id="login"
               placeholder="Login"
-              class="border rounded p-2 w-full mb-4"
+              class="rounded p-2 w-full mb-4 bg-white placeholder:text-black"
             />
             <div class="relative">
               <input
                 type="password"
                 id="password"
                 placeholder="Password"
-                class="border rounded p-2 w-full"
+                class="bg-white rounded p-2 w-full placeholder:text-black"
               />
               <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                 <button
-                  class="text-sm show-password rounded-lg p-1 hover:text-gray-700 duration-300 hover:scale-95"
+                  class="text-sm show-password rounded-lg p-1 duration-300 hover:scale-95"
                 >
                   Show
                 </button>
               </div>
             </div>
             <div class="flex justify-end pt-2">
-              <button
-                class="text-sm hover:text-gray-700 duration-300 hover:scale-95"
-              >
+              <button class="text-sm duration-300 hover:scale-95">
                 Forgot password ?
               </button>
             </div>
           </div>
 
           <div
-            class="register-form space-y-4 items-center flex-col p-4 rounded-xl hidden"
+            class="register-form space-y-4 items-center flex-col rounded-xl hidden w-full"
           >
             <input
               type="text"
               id="register-login"
               placeholder="Login"
-              class="border rounded p-2 w-full"
+              class="bg-white rounded p-2 w-full placeholder:text-black"
             />
-            <input
-              type="password"
-              id="register-password"
-              placeholder="Password"
-              class="border rounded p-2 w-full"
-            />
+            <div class="relative w-full">
+              <input
+                type="password"
+                id="register-password"
+                placeholder="Password"
+                class="bg-white rounded p-2 w-full placeholder:text-black"
+              />
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <button
+                  class="text-sm show-register-password rounded-lg p-1 duration-300 hover:scale-95"
+                >
+                  Show
+                </button>
+              </div>
+            </div>
             <input
               type="password"
               id="register-confirm-password"
               placeholder="Confirm Password"
-              class="border rounded p-2 w-full"
+              class="bg-white rounded p-2 w-full placeholder:text-black"
             />
+
             <input
               type="text"
+              id="register-email"
               placeholder="Email"
-              class="border rounded p-2 w-full"
+              class="bg-white rounded p-2 w-full placeholder:text-black"
             />
+
             <input
               type="text"
+              id="register-confirm-email"
               placeholder="Confirm Email"
-              class="border rounded p-2 w-full"
+              class="bg-white rounded p-2 w-full placeholder:text-black"
             />
             <button
               class="create-account p-4 mt-4 rounded bg-blue-500 text-white shadow-md hover:scale-95 cursor-pointer hover:bg-blue-700 duration-300"
@@ -85,19 +101,17 @@
             </button>
           </div>
         </div>
-        <button
-          class="connect-btn rounded w-full p-4 mt-4 hover:bg-blue-700 duration-300 bg-blue-500 text-white shadow-md hover:scale-95 cursor-pointer"
+
+        <div
+          class="login-button-container flex justify-between items-center w-full"
         >
-          Connect
-        </button>
-        <div class="flex justify-center items-center w-full">
           <button
-            class="login-btn rounded p-4 mt-4 hover:bg-green-700 duration-300 bg-green-500 text-white shadow-md hover:scale-95 cursor-pointer"
+            class="connect-btn rounded w-1/2 p-4 mt-4 hover:bg-blue-700 duration-300 bg-blue-500 text-white shadow-md hover:scale-95 cursor-pointer"
           >
-            Login
+            Connect
           </button>
           <button
-            class="register-btn rounded p-4 mt-4 hover:bg-amber-700 duration-300 bg-amber-500 text-white shadow-md hover:scale-95 cursor-pointer ml-2"
+            class="register-btn rounded p-4 mt-4 hover:bg-amber-700 duration-300 bg-amber-500 text-white shadow-md hover:scale-95 cursor-pointer w-1/2 ml-2"
           >
             Register
           </button>

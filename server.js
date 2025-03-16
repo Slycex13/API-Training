@@ -2,15 +2,18 @@ const express = require("express");
 const mysql = require("mysql2");
 const app = express();
 const cors = require("cors");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 app.use(express.json());
 app.use(cors());
 
 // Créer une connexion à la base de données
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "admin",
-  database: "dbtest",
+  host: "sql.freedb.tech",
+  user: "freedb_slycex",
+  password: "Fnt@EC9V7S7PBvZ",
+  database: "freedb_slyapp",
+  port: 3306,
 });
 
 // Se connecter à la base de données
@@ -23,28 +26,69 @@ connection.connect(function (err) {
 app.post("/login", async (req, res) => {
   const credentials = req.body;
   try {
-    const query = "SELECT * FROM accounts WHERE login = ? AND password = ?";
+    const query = "SELECT * FROM accounts WHERE login = ?";
     const [results] = await connection
       .promise()
-      .query(query, [credentials.login, credentials.password]);
+      .query(query, [credentials.login]);
+
+    // Vérifier si l'utilisateur existe
     if (results.length === 0) {
       console.log("Utilisateur introuvable");
       return res.status(404).json({
         success: false,
         message: "Utilisateur introuvable",
       });
-    } else {
+    }
+
+    // Comparer le mot de passe
+    const user = results[0];
+    const match = await bcrypt.compare(credentials.password, user.password);
+    if (!match) {
+      console.log("Mot de passe incorrect");
+      return res.status(404).json({
+        success: false,
+        message: "Mot de passe incorrect",
+      });
+    }
+
+    // Connexion réussie
+    res.status(200).json({
+      success: true,
+      message: "Connexion réussie",
+      redirectTo: "http://127.0.0.1:5500/public/posts.html", // URL de redirection
+    });
+  } catch (error) {
+    console.error("Erreur lors de l'authentification : ", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur lors de l'authentification",
+    });
+  }
+});
+
+//Register
+app.post("/register", async (req, res) => {
+  const credentials = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(credentials.password, saltRounds);
+    const query =
+      "INSERT INTO accounts (login, password, email) VALUES (?,?,?)";
+    const [results] = await connection
+      .promise()
+      .query(query, [credentials.login, hashedPassword, credentials.email]);
+    if (results) {
       res.status(200).json({
         success: true,
-        message: "Connexion réussie",
-        redirectTo: "http://127.0.0.1:5500/public/posts.html", // URL de redirection
+        message: "Inscription réussie",
+        redirectTo: "http://127.0.0.1:5500/public/index.html", // URL de redirection
       });
     }
   } catch (error) {
-    console.error("Erreur lors de l'auth", error);
+    console.error("Erreur lors de l'inscription", error);
     res.status(500).json({
       success: false,
-      message: "Erreur lors de l'auth",
+      message: "Erreur lors de l'inscription",
     });
   }
 });
