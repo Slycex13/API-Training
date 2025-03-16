@@ -19,6 +19,36 @@ connection.connect(function (err) {
   console.log("Connected at database !");
 });
 
+//Login
+app.post("/login", async (req, res) => {
+  const credentials = req.body;
+  try {
+    const query = "SELECT * FROM accounts WHERE login = ? AND password = ?";
+    const [results] = await connection
+      .promise()
+      .query(query, [credentials.login, credentials.password]);
+    if (results.length === 0) {
+      console.log("Utilisateur introuvable");
+      return res.status(404).json({
+        success: false,
+        message: "Utilisateur introuvable",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Connexion réussie",
+        redirectTo: "http://127.0.0.1:5500/public/posts.html", // URL de redirection
+      });
+    }
+  } catch (error) {
+    console.error("Erreur lors de l'auth", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur lors de l'auth",
+    });
+  }
+});
+
 // Route pour récupérer tous les posts
 app.get("/posts", async (req, res) => {
   try {
@@ -65,8 +95,13 @@ app.post("/posts", async (req, res) => {
 
   try {
     const query = "INSERT INTO posts (post) VALUES (?)";
-    await connection.promise().query(query, [title]);
-    res.json({ success: true, message: "Post créé avec succès" });
+    const [result] = await connection.promise().query(query, [title]);
+    const postId = result.insertId;
+    res.json({
+      success: true,
+      message: "Post créé avec succès",
+      post: { id: postId, post: title },
+    });
   } catch (error) {
     console.error("Erreur lors de la création du post:", error);
     res.status(500).json({

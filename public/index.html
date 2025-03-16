@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/public/login.js" defer></script>
+    <link href="/src/output.css" rel="stylesheet" />
+    <title>Slyapp - Login/Register</title>
+  </head>
+  <body>
+    <div class="flex justify-center text-2xl mt-20 m-4">
+      <div
+        class="inline-flex items-center flex-col border-2 border-gray-500 p-4 rounded bg-gray-300"
+      >
+        <h1 class="border-b-2 border-gray-500 p-2 mb-4 text-center">
+          Login / Register
+        </h1>
+        <div class="justify-center items-center w-full flex-col">
+          <div class="login-form">
+            <input
+              type="text"
+              id="login"
+              placeholder="Login"
+              class="border rounded p-2 w-full mb-4"
+            />
+            <div class="relative">
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                class="border rounded p-2 w-full"
+              />
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <button
+                  class="text-sm show-password rounded-lg p-1 hover:text-gray-700 duration-300 hover:scale-95"
+                >
+                  Show
+                </button>
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button
+                class="text-sm hover:text-gray-700 duration-300 hover:scale-95"
+              >
+                Forgot password ?
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="register-form space-y-4 items-center flex-col p-4 rounded-xl hidden"
+          >
+            <input
+              type="text"
+              id="register-login"
+              placeholder="Login"
+              class="border rounded p-2 w-full"
+            />
+            <input
+              type="password"
+              id="register-password"
+              placeholder="Password"
+              class="border rounded p-2 w-full"
+            />
+            <input
+              type="password"
+              id="register-confirm-password"
+              placeholder="Confirm Password"
+              class="border rounded p-2 w-full"
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              class="border rounded p-2 w-full"
+            />
+            <input
+              type="text"
+              placeholder="Confirm Email"
+              class="border rounded p-2 w-full"
+            />
+            <button
+              class="create-account p-4 mt-4 rounded bg-blue-500 text-white shadow-md hover:scale-95 cursor-pointer hover:bg-blue-700 duration-300"
+            >
+              Create account
+            </button>
+          </div>
+        </div>
+        <button
+          class="connect-btn rounded w-full p-4 mt-4 hover:bg-blue-700 duration-300 bg-blue-500 text-white shadow-md hover:scale-95 cursor-pointer"
+        >
+          Connect
+        </button>
+        <div class="flex justify-center items-center w-full">
+          <button
+            class="login-btn rounded p-4 mt-4 hover:bg-green-700 duration-300 bg-green-500 text-white shadow-md hover:scale-95 cursor-pointer"
+          >
+            Login
+          </button>
+          <button
+            class="register-btn rounded p-4 mt-4 hover:bg-amber-700 duration-300 bg-amber-500 text-white shadow-md hover:scale-95 cursor-pointer ml-2"
+          >
+            Register
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
