@@ -1,7 +1,10 @@
+require("dotenv").config({ path: ".env.local" });
 const express = require("express");
 const mysql = require("mysql2");
 const app = express();
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const secretKey = process.env.SECRET_KEY;
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 app.use(express.json());
@@ -10,8 +13,8 @@ app.use(cors());
 // Créer une connexion à la base de données
 const connection = mysql.createConnection({
   host: "sql.freedb.tech",
-  user: "freedb_slycex",
-  password: "Fnt@EC9V7S7PBvZ",
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   database: "freedb_slyapp",
   port: 3306,
 });
@@ -21,6 +24,19 @@ connection.connect(function (err) {
   if (err) throw err;
   console.log("Connected at database !");
 });
+
+// Middleware
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Accès refusé" });
+
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Accès refusé" });
+    req.user = decoded;
+    next();
+  });
+}
 
 //Login
 app.post("/login", async (req, res) => {
@@ -51,10 +67,17 @@ app.post("/login", async (req, res) => {
       });
     }
 
+    // Genère un token JWT qui expire dans 1h
+
+    const token = jwt.sign({ id: user.id, login: user.login }, secretKey, {
+      expiresIn: "1h",
+    });
+
     // Connexion réussie
     res.status(200).json({
       success: true,
       message: "Connexion réussie",
+      token: token,
       redirectTo: "http://127.0.0.1:5500/public/posts.html", // URL de redirection
     });
   } catch (error) {
@@ -94,7 +117,7 @@ app.post("/register", async (req, res) => {
 });
 
 // Route pour récupérer tous les posts
-app.get("/posts", async (req, res) => {
+app.get("/posts", authenticateToken, async (req, res) => {
   try {
     const posts = await getPosts();
     res.json(posts);

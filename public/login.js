@@ -51,18 +51,17 @@ async function Login(login, password) {
         "Content-Type": "application/json", // Assurez-vous que cet en-tête est présent
       },
       body: JSON.stringify({ login: login, password }), // Corps de la requête
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          window.location.href = data.redirectTo; // Rediriger vers /posts.html
-        } else {
-          alert(data.message); // Afficher un message d'erreur
-        }
-      });
+    });
 
     if (!response.ok) {
       throw new Error(`Erreur HTTP: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    if (data.success) {
+      localStorage.setItem("authToken", data.token);
+      window.location.replace(data.redirectTo);
     }
   } catch (error) {
     console.error("Erreur lors de l'authentification: ", error);
@@ -81,7 +80,7 @@ async function Register(login, password, email) {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          window.location.href = data.redirectTo; // Rediriger vers /posts.html
+          window.location.href = data.redirectTo; // Rediriger vers /index.html
         } else {
           alert(data.message); // Afficher un message d'erreur
         }

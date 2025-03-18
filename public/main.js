@@ -136,7 +136,14 @@ async function afficherPost(element, index) {
 
 // Fonction pour afficher tout les posts
 async function afficherPosts() {
-  const response = await fetch("http://localhost:3333/posts");
+  const token = localStorage.getItem("authToken");
+
+  const response = await fetch("http://localhost:3333/posts", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const posts = await response.json();
   console.log(posts);
 
